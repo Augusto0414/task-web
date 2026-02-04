@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "framer-motion";
 import { Asterisk, Eye, EyeOff } from "lucide-react";
 import { useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
 import AuthSidebar from "./AuthSidebar";
@@ -34,119 +35,141 @@ function AuthSection({
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="flex w-full items-center justify-center p-4">
-      <div className="flex w-full max-w-5xl overflow-hidden rounded-[2.5rem] bg-white p-3 shadow-2xl">
+    <div className="flex w-full items-center justify-center p-2 sm:p-4">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex w-full max-w-5xl overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-white p-2 sm:p-3 shadow-2xl"
+      >
         <AuthSidebar />
 
-        <div className="flex flex-1 flex-col px-10 py-16 lg:px-20 xl:py-20">
-          <div className="mb-12 lg:hidden">
+        <div className="flex flex-1 flex-col px-6 py-12 sm:px-10 sm:py-16 lg:px-20 xl:py-20 min-h-[600px] sm:min-h-[700px]">
+          <div className="mb-8 lg:hidden">
              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white font-bold">
                 <Asterisk className="h-6 w-6" strokeWidth={3} />
             </div>
           </div>
 
-          <div className="mb-10">
-            <h2 className="mb-3 text-3xl font-bold tracking-tight text-slate-900">
-              {authMode === "login" ? "Welcome back" : "Create an account"}
-            </h2>
-            <p className="max-w-md text-sm leading-relaxed text-slate-500">
-              Access your tasks, notes, and projects anytime, anywhere - and keep everything flowing in one place.
-            </p>
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={authMode}
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="mb-10 text-center sm:text-left">
+                <h2 className="mb-3 text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+                  {authMode === "login" ? "Bienvenido de nuevo" : "Crea tu cuenta"}
+                </h2>
+                <p className="max-w-md text-sm leading-relaxed text-slate-500 mx-auto sm:mx-0">
+                  Accede a tus tareas, notas y proyectos desde cualquier lugar y mantén todo fluyendo en un solo sitio.
+                </p>
+              </div>
 
-          <form className="flex max-w-md flex-col gap-6" onSubmit={onSubmit}>
-            {authMode === "register" && (
-              <label className="flex flex-col gap-2">
-                <span className="px-1 text-xs font-bold uppercase tracking-wider text-slate-800">Full Name</span>
-                <input
-                  className="rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10"
-                  placeholder="John Doe"
-                  value={authForm.name}
-                  onChange={(event) =>
-                    setAuthForm((prev) => ({
-                      ...prev,
-                      name: event.target.value,
-                    }))
-                  }
-                />
-              </label>
-            )}
+              <form className="flex w-full max-w-md flex-col gap-5 sm:gap-6 mx-auto sm:mx-0" onSubmit={onSubmit}>
+                {authMode === "register" && (
+                  <label className="flex flex-col gap-2">
+                    <span className="px-1 text-xs font-bold uppercase tracking-wider text-slate-800">Nombre completo</span>
+                    <input
+                      className="rounded-xl border border-slate-200 bg-white px-4 py-3 sm:py-3.5 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10"
+                      placeholder="Ej. Juan Pérez"
+                      value={authForm.name}
+                      onChange={(event) =>
+                        setAuthForm((prev) => ({
+                          ...prev,
+                          name: event.target.value,
+                        }))
+                      }
+                    />
+                  </label>
+                )}
 
-            <label className="flex flex-col gap-2">
-              <span className="px-1 text-xs font-bold uppercase tracking-wider text-slate-800">Your email</span>
-              <input
-                type="email"
-                className="rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10"
-                placeholder="farazhaidet786@gmail.com"
-                value={authForm.email}
-                onChange={(event) =>
-                  setAuthForm((prev) => ({
-                    ...prev,
-                    email: event.target.value,
-                  }))
-                }
-              />
-            </label>
+                <label className="flex flex-col gap-2">
+                  <span className="px-1 text-xs font-bold uppercase tracking-wider text-slate-800">Correo electrónico</span>
+                  <input
+                    type="email"
+                    className="rounded-xl border border-slate-200 bg-white px-4 py-3 sm:py-3.5 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10"
+                    placeholder="ejemplo@correo.com"
+                    value={authForm.email}
+                    onChange={(event) =>
+                      setAuthForm((prev) => ({
+                        ...prev,
+                        email: event.target.value,
+                      }))
+                    }
+                  />
+                </label>
 
-            <label className="flex flex-col gap-2">
-              <span className="px-1 text-xs font-bold uppercase tracking-wider text-slate-800">Password</span>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10"
-                  placeholder="••••••••"
-                  value={authForm.password}
-                  onChange={(event) =>
-                    setAuthForm((prev) => ({
-                      ...prev,
-                      password: event.target.value,
-                    }))
-                  }
-                />
-                <button 
-                  type="button" 
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                <label className="flex flex-col gap-2">
+                  <span className="px-1 text-xs font-bold uppercase tracking-wider text-slate-800">Contraseña</span>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 sm:py-3.5 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10"
+                      placeholder="••••••••"
+                      value={authForm.password}
+                      onChange={(event) =>
+                        setAuthForm((prev) => ({
+                          ...prev,
+                          password: event.target.value,
+                        }))
+                      }
+                    />
+                    <button 
+                      type="button" 
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </label>
+
+                {(authFormError || authError) && (
+                  <motion.p 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="rounded-lg bg-rose-50 p-3 text-xs font-medium text-rose-500"
+                  >
+                    {authFormError || authError}
+                  </motion.p>
+                )}
+
+                {registerNotice && (
+                  <motion.p 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="rounded-lg bg-emerald-50 p-3 text-xs font-medium text-emerald-500"
+                  >
+                    {registerNotice}
+                  </motion.p>
+                )}
+
+                <button
+                  className="mt-2 sm:mt-4 rounded-xl bg-indigo-600 py-3.5 sm:py-4 text-sm font-bold text-white shadow-xl shadow-indigo-600/30 transition hover:bg-indigo-500 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
+                  type="submit"
+                  disabled={authStatus === "loading"}
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {authStatus === "loading" ? "Procesando..." : authMode === "register" ? "Empezar ahora" : "Iniciar sesión"}
+                </button>
+              </form>
+
+              <div className="mt-8 sm:mt-12 text-center sm:text-left text-sm">
+                <span className="text-slate-500">
+                  {authMode === "login" ? "¿No tienes una cuenta?" : "¿Ya tienes una cuenta?"}
+                </span>{" "}
+                <button
+                  className="font-bold text-indigo-600 hover:text-indigo-500 underline-offset-4 hover:underline"
+                  onClick={() => onModeChange(authMode === "login" ? "register" : "login")}
+                >
+                  {authMode === "login" ? "Regístrate" : "Inicia sesión"}
                 </button>
               </div>
-            </label>
-
-            {(authFormError || authError) && (
-              <p className="rounded-lg bg-rose-50 p-3 text-xs font-medium text-rose-500">
-                {authFormError || authError}
-              </p>
-            )}
-
-            {registerNotice && (
-              <p className="rounded-lg bg-emerald-50 p-3 text-xs font-medium text-emerald-500">
-                {registerNotice}
-              </p>
-            )}
-
-            <button
-              className="mt-4 rounded-xl bg-indigo-600 py-4 text-sm font-bold text-white shadow-xl shadow-indigo-600/30 transition hover:bg-indigo-500 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
-              type="submit"
-              disabled={authStatus === "loading"}
-            >
-              {authStatus === "loading" ? "Processing..." : authMode === "register" ? "Get Started" : "Sign In"}
-            </button>
-          </form>
-
-          <div className="mt-12 text-sm">
-            <span className="text-slate-500">
-              {authMode === "login" ? "Don't have an account?" : "Already have an account?"}
-            </span>{" "}
-            <button
-              className="font-bold text-indigo-600 hover:text-indigo-500 underline-offset-4 hover:underline"
-              onClick={() => onModeChange(authMode === "login" ? "register" : "login")}
-            >
-              {authMode === "login" ? "Sign up" : "Sign in"}
-            </button>
-          </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

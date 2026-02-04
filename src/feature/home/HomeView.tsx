@@ -75,7 +75,7 @@ function HomeView() {
 
   const validateAuthForm = () => {
     if (!authForm.email.trim() || !authForm.password.trim()) {
-      return "Email y contraseña son obligatorios.";
+      return "El correo y la contraseña son obligatorios.";
     }
     if (authMode === "register" && !authForm.name.trim()) {
       return "El nombre es obligatorio para el registro.";
@@ -88,7 +88,7 @@ function HomeView() {
       return "El título es obligatorio.";
     }
     if (!statusOptions.includes(form.status)) {
-      return "El status solo puede ser pending | in_progress | done.";
+      return "El estado de la tarea no es válido.";
     }
     return null;
   };
@@ -112,7 +112,7 @@ function HomeView() {
         }),
       );
       if (registerUser.fulfilled.match(result)) {
-        setRegisterNotice("Registro exitoso. Inicia sesión para continuar.");
+        setRegisterNotice("¡Registro completado con éxito! Por favor, inicia sesión.");
         setAuthMode("login");
         setAuthForm((prev) => ({ ...prev, password: "" }));
       }
