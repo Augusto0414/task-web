@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
+import type { Task, TaskStatus } from "../../../interfaces/tasks";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import {
     clearTasksError,
@@ -6,8 +7,6 @@ import {
     fetchTasks,
     resetTasks,
     updateTask,
-    type Task,
-    type TaskStatus,
 } from "../tasksSlice";
 
 export function useTasks(token: string | null) {

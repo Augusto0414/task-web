@@ -1,8 +1,8 @@
+import type { TaskStatus } from "../../interfaces/tasks";
 import AuthSection from "../auth/components/AuthSection";
 import { useAuth } from "../auth/hooks/useAuth";
 import TasksSection from "../tasks/components/TasksSection";
 import { useTasks } from "../tasks/hooks/useTasks";
-import type { TaskStatus } from "../tasks/tasksSlice";
 
 const statusOptions: TaskStatus[] = ["pending", "in_progress", "done"];
 

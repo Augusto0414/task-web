@@ -1,26 +1,5 @@
 import { ChevronDown, X } from "lucide-react";
-import { type Dispatch, type FormEvent, type SetStateAction } from "react";
-import type { Task, TaskStatus } from "../types";
-
-export interface TaskFormState {
-  title: string;
-  description: string;
-  status: TaskStatus;
-}
-
-interface TaskFormProps {
-  editingTask: Task | null;
-  setEditingTask: Dispatch<SetStateAction<Task | null>>;
-  taskForm: TaskFormState;
-  setTaskForm: Dispatch<SetStateAction<TaskFormState>>;
-  taskFormError: string | null;
-  tasksError: string | null;
-  statusOptions: TaskStatus[];
-  statusLabel: Record<TaskStatus, string>;
-  isBusy: boolean;
-  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
-  onClose: () => void;
-}
+import type { TaskFormProps, TaskStatus } from "../../../interfaces/tasks";
 
 function TaskForm({
   editingTask,

@@ -1,28 +1,9 @@
 import { BarChart2, CheckCircle2, Clock, Zap } from "lucide-react";
-import { useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
-import type { Task, TaskStatus } from "../types";
+import { useState } from "react";
+import type { Task, TaskStatus, TasksSectionProps } from "../../../interfaces/tasks";
 import KanbanColumn from "./KanbanColumn";
 import SummaryCard from "./SummaryCard";
-import TaskForm, { type TaskFormState } from "./TaskForm";
-
-interface TasksSectionProps {
-  userName: string;
-  isBusy: boolean;
-  statusOptions: TaskStatus[];
-  statusLabel: Record<TaskStatus, string>;
-  editingTask: Task | null;
-  setEditingTask: Dispatch<SetStateAction<Task | null>>;
-  taskForm: TaskFormState;
-  setTaskForm: Dispatch<SetStateAction<TaskFormState>>;
-  taskFormError: string | null;
-  tasksError: string | null;
-  tasksStatus: "idle" | "loading" | "succeeded" | "failed";
-  totalTasks: number;
-  tasksByStatus: Record<TaskStatus, Task[]>;
-  onCreateTask: (event: FormEvent<HTMLFormElement>) => Promise<boolean>;
-  onUpdateTask: (event: FormEvent<HTMLFormElement>) => Promise<boolean>;
-  onLogout: () => void;
-}
+import TaskForm from "./TaskForm";
 
 function TasksSection({
   userName,

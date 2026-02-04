@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiClient from "../../api/axios";
 import { getApiErrorMessage } from "../../api/errors";
-import type { AuthState, LoginPayload, RegisterPayload } from "./types";
+import type { AuthState, LoginPayload, RegisterPayload } from "../../interfaces/auth";
 
 const initialState: AuthState = {
   token: localStorage.getItem("token"),

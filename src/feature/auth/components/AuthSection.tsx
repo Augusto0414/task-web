@@ -1,25 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Asterisk, Eye, EyeOff } from "lucide-react";
-import { useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
+import { useState } from "react";
 import AuthSidebar from "./AuthSidebar";
 
-interface AuthFormState {
-  name: string;
-  email: string;
-  password: string;
-}
-
-interface AuthSectionProps {
-  authMode: "login" | "register";
-  onModeChange: (mode: "login" | "register") => void;
-  authForm: AuthFormState;
-  setAuthForm: Dispatch<SetStateAction<AuthFormState>>;
-  authFormError: string | null;
-  authError: string | null;
-  registerNotice: string | null;
-  authStatus: "idle" | "loading" | "succeeded" | "failed";
-  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
-}
+import type { AuthSectionProps } from "../../../interfaces/auth";
 
 function AuthSection({
   authMode,
