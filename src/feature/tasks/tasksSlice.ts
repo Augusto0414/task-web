@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiClient from "../../api/axios";
 import { getApiErrorMessage } from "../../api/errors";
-import type { Task, TasksState, TaskStatus } from "./types";
+import type { Task, TaskStatus, TasksState } from "../../interfaces/tasks";
 
 const initialState: TasksState = {
   items: [],
@@ -90,5 +90,5 @@ const tasksSlice = createSlice({
 export const { clearTasksError, resetTasks } = tasksSlice.actions;
 
 export default tasksSlice.reducer;
-export type { Task, TasksState, TaskStatus };
+export type { Task, TaskStatus, TasksState };
 

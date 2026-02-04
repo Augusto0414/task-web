@@ -13,9 +13,9 @@ function AuthSidebar() {
       </div>
 
       <div className="relative z-10">
-        <p className="mb-4 text-xs font-bold uppercase tracking-widest text-white/70">You can easily</p>
+        <p className="mb-4 text-xs font-bold uppercase tracking-widest text-white/70">Organiza tu día</p>
         <h1 className="text-3xl font-bold leading-tight text-white">
-          Get access your personal hub for clarity and productivity
+          Accede a tu centro personal de claridad y productividad
         </h1>
       </div>
     </div>
