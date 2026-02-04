@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { Task, TaskStatus, TasksSectionProps } from "../../../interfaces/tasks";
 import KanbanColumn from "./KanbanColumn";
 import SummaryCard from "./SummaryCard";
+import { SummaryCardSkeleton } from "./SummaryCardSkeleton";
 import TaskForm from "./TaskForm";
 
 function TasksSection({
@@ -16,6 +17,7 @@ function TasksSection({
   setTaskForm,
   taskFormError,
   tasksError,
+  tasksStatus,
   totalTasks,
   tasksByStatus,
   onCreateTask,
@@ -63,26 +65,37 @@ function TasksSection({
 
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <SummaryCard 
-          label="Total" 
-          count={totalTasks} 
-          icon={<BarChart2 className="text-[#4318FF]" size={24} />} 
-        />
-        <SummaryCard 
-          label="Pendientes" 
-          count={tasksByStatus.pending.length} 
-          icon={<Clock className="text-[#FFB800]" size={24} />} 
-        />
-        <SummaryCard 
-          label="En Progreso" 
-          count={tasksByStatus.in_progress.length} 
-          icon={<Zap className="text-[#3965FF]" size={24} />} 
-        />
-        <SummaryCard 
-          label="Completadas" 
-          count={tasksByStatus.done.length} 
-          icon={<CheckCircle2 className="text-[#05CD99]" size={24} />} 
-        />
+        {tasksStatus === "loading" ? (
+          <>
+            <SummaryCardSkeleton />
+            <SummaryCardSkeleton />
+            <SummaryCardSkeleton />
+            <SummaryCardSkeleton />
+          </>
+        ) : (
+          <>
+            <SummaryCard 
+              label="Total" 
+              count={totalTasks} 
+              icon={<BarChart2 className="text-[#4318FF]" size={24} />} 
+            />
+            <SummaryCard 
+              label="Pendientes" 
+              count={tasksByStatus.pending.length} 
+              icon={<Clock className="text-[#FFB800]" size={24} />} 
+            />
+            <SummaryCard 
+              label="En Progreso" 
+              count={tasksByStatus.in_progress.length} 
+              icon={<Zap className="text-[#3965FF]" size={24} />} 
+            />
+            <SummaryCard 
+              label="Completadas" 
+              count={tasksByStatus.done.length} 
+              icon={<CheckCircle2 className="text-[#05CD99]" size={24} />} 
+            />
+          </>
+        )}
       </div>
 
       <div className="relative">
@@ -94,6 +107,7 @@ function TasksSection({
               label={statusLabel[status]}
               tasks={tasksByStatus[status]}
               isBusy={isBusy}
+              isLoading={tasksStatus === "loading"}
               onEdit={handleEdit}
               onAddTask={() => handleAddTask(status)}
             />
