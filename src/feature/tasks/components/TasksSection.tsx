@@ -6,7 +6,7 @@ import SummaryCard from "./SummaryCard";
 import TaskForm, { type TaskFormState } from "./TaskForm";
 
 interface TasksSectionProps {
-  token: string;
+  userName: string;
   isBusy: boolean;
   statusOptions: TaskStatus[];
   statusLabel: Record<TaskStatus, string>;
@@ -25,7 +25,7 @@ interface TasksSectionProps {
 }
 
 function TasksSection({
-  token,
+  userName,
   isBusy,
   statusOptions,
   statusLabel,
@@ -67,10 +67,9 @@ function TasksSection({
           <p className="text-sm font-medium text-[#A3AED0]">Gestiona tus proyectos y tareas pendientes</p>
         </div>
         <div className="flex items-center gap-6">
-          <div className="hidden rounded-2xl border border-slate-100 bg-white px-5 py-2.5 sm:block text-right shadow-sm">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-[#A3AED0]">Sesión activa</p>
-            <p className="text-xs font-mono font-bold text-[#1B2559]">{token.slice(0, 16)}...</p>
-          </div>
+          <p className="hidden text-sm font-bold text-[#1B2559] sm:block">
+            {userName}
+          </p>
           <button
             className="rounded-2xl bg-white px-6 py-3 text-sm font-bold text-[#1B2559] shadow-sm ring-1 ring-slate-100 transition-all hover:bg-slate-50 active:scale-95"
             type="button"

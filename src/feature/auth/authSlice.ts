@@ -5,6 +5,7 @@ import type { AuthState, LoginPayload, RegisterPayload } from "./types";
 
 const initialState: AuthState = {
   token: localStorage.getItem("token"),
+  user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null,
   status: "idle",
   error: null,
 };
@@ -21,7 +22,11 @@ export const registerUser = createAsyncThunk<unknown, RegisterPayload, { rejectV
   },
 );
 
-export const loginUser = createAsyncThunk<{ token?: string }, LoginPayload, { rejectValue: string }>(
+export const loginUser = createAsyncThunk<
+  { token?: string; user?: AuthState["user"] },
+  LoginPayload,
+  { rejectValue: string }
+>(
   "auth/login",
   async (payload: LoginPayload, { rejectWithValue }) => {
     try {
@@ -59,9 +64,11 @@ const authSlice = createSlice({
     },
     logout(state) {
       state.token = null;
+      state.user = null;
       state.error = null;
       state.status = "idle";
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
     },
     clearAuthError(state) {
       state.error = null;
@@ -87,9 +94,14 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = "succeeded";
         const token = action.payload?.token ?? null;
+        const user = action.payload?.user ?? null;
         state.token = token;
+        state.user = user;
         if (token) {
           localStorage.setItem("token", token);
+        }
+        if (user) {
+          localStorage.setItem("user", JSON.stringify(user));
         }
       })
       .addCase(loginUser.rejected, (state, action) => {

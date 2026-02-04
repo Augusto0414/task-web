@@ -23,7 +23,7 @@ const statusLabel: Record<TaskStatus, string> = {
 
 function HomeView() {
   const dispatch = useAppDispatch();
-  const { token, status: authStatus, error: authError } = useAppSelector((state) => state.auth);
+  const { token, user, status: authStatus, error: authError } = useAppSelector((state) => state.auth);
   const { items, status: tasksStatus, error: tasksError } = useAppSelector((state) => state.tasks);
 
   const [authMode, setAuthMode] = useState<"login" | "register">("login");
@@ -202,7 +202,7 @@ function HomeView() {
           />
         ) : (
           <TasksSection
-            token={token}
+            userName={user?.name || "N/A"}
             isBusy={isBusy}
             statusOptions={statusOptions}
             statusLabel={statusLabel}

@@ -17,10 +17,10 @@ function TaskCard({ task, onEdit }: TaskCardProps) {
   return (
     <article
       onClick={() => onEdit(task)}
-      className="group relative flex flex-col gap-4 rounded-2xl bg-white p-5 shadow-sm border border-slate-100 transition-all hover:shadow-md hover:border-indigo-200 cursor-pointer"
+      className="group relative flex flex-col gap-4 rounded-2xl bg-white p-5 shadow-sm border border-slate-100 cursor-pointer"
     >
       <div className="flex flex-col gap-1.5">
-        <h3 className="text-sm font-bold text-[#1B2559] uppercase tracking-wide group-hover:text-indigo-600 transition-colors">
+        <h3 className="text-sm font-bold text-[#1B2559] uppercase tracking-wide">
           {task.title}
         </h3>
         <p className="line-clamp-2 text-[13px] leading-relaxed text-[#A3AED0]">
