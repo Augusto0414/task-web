@@ -11,9 +11,10 @@ interface KanbanColumnProps {
   isLoading?: boolean;
   onEdit: (task: Task) => void;
   onAddTask: () => void;
+  onMoveTask: (taskId: Task["id"], nextStatus: TaskStatus) => Promise<boolean>;
 }
 
-function KanbanColumn({ status, label, tasks, isBusy, isLoading, onEdit, onAddTask }: KanbanColumnProps) {
+function KanbanColumn({ status, label, tasks, isBusy, isLoading, onEdit, onAddTask, onMoveTask }: KanbanColumnProps) {
   const dotColors = {
     pending: "bg-amber-500",
     in_progress: "bg-blue-500",
@@ -30,7 +31,19 @@ function KanbanColumn({ status, label, tasks, isBusy, isLoading, onEdit, onAddTa
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 min-h-37.5">
+      <div
+        className="flex flex-col gap-4 min-h-37.5"
+        onDragOver={(event) => {
+          event.preventDefault();
+        }}
+        onDrop={(event) => {
+          event.preventDefault();
+          const taskId = event.dataTransfer.getData("text/plain");
+          if (taskId) {
+            void onMoveTask(taskId, status);
+          }
+        }}
+      >
         {isLoading ? (
           <>
             <TaskCardSkeleton />

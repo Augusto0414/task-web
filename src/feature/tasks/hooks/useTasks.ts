@@ -1,13 +1,7 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import type { Task, TaskStatus } from "../../../interfaces/tasks";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import {
-    clearTasksError,
-    createTask,
-    fetchTasks,
-    resetTasks,
-    updateTask,
-} from "../tasksSlice";
+import { clearTasksError, createTask, fetchTasks, resetTasks, updateTask } from "../tasksSlice";
 
 export function useTasks(token: string | null) {
   const dispatch = useAppDispatch();
@@ -100,6 +94,16 @@ export function useTasks(token: string | null) {
     return false;
   };
 
+  const handleMoveTask = async (taskId: Task["id"], nextStatus: TaskStatus) => {
+    const target = items.find((item) => String(item.id) === String(taskId));
+    if (!target || target.status === nextStatus) {
+      return false;
+    }
+
+    const result = await dispatch(updateTask({ ...target, status: nextStatus }));
+    return updateTask.fulfilled.match(result);
+  };
+
   return {
     items,
     status,
@@ -113,5 +117,6 @@ export function useTasks(token: string | null) {
     setEditingTask,
     handleCreateTask,
     handleUpdateTask,
+    handleMoveTask,
   };
 }

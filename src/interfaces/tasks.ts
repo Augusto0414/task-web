@@ -51,5 +51,6 @@ export interface TasksSectionProps {
   tasksByStatus: Record<TaskStatus, Task[]>;
   onCreateTask: (event: FormEvent<HTMLFormElement>) => Promise<boolean>;
   onUpdateTask: (event: FormEvent<HTMLFormElement>) => Promise<boolean>;
+  onMoveTask: (taskId: Task["id"], nextStatus: TaskStatus) => Promise<boolean>;
   onLogout: () => void;
 }
