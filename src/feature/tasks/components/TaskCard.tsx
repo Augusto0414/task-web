@@ -11,15 +11,7 @@ function TaskCard({ task, onEdit }: TaskCardProps) {
   const currentStatus = statusStyles[task.status] || statusStyles.pending;
 
   return (
-    <article
-      onClick={() => onEdit(task)}
-      className={ui.card.kanban}
-      draggable
-      onDragStart={(event) => {
-        event.dataTransfer.setData("text/plain", String(task.id));
-        event.dataTransfer.effectAllowed = "move";
-      }}
-    >
+    <article onClick={() => onEdit(task)} className={ui.card.kanban}>
       <div className="flex flex-col gap-1.5">
         <h3 className={`text-sm font-bold ${ui.text.primary} uppercase tracking-wide`}>{task.title}</h3>
         <p className={`line-clamp-2 text-[13px] leading-relaxed ${ui.text.muted}`}>
