@@ -13,15 +13,7 @@ interface KanbanColumnProps {
   onAddTask: () => void;
 }
 
-function KanbanColumn({
-  status,
-  label,
-  tasks,
-  isBusy,
-  isLoading,
-  onEdit,
-  onAddTask,
-}: KanbanColumnProps) {
+function KanbanColumn({ status, label, tasks, isBusy, isLoading, onEdit, onAddTask }: KanbanColumnProps) {
   const dotColors = {
     pending: "bg-amber-500",
     in_progress: "bg-blue-500",
@@ -33,16 +25,12 @@ function KanbanColumn({
       <div className="flex items-center justify-between px-2">
         <div className="flex items-center gap-2.5">
           <div className={`h-2.5 w-2.5 rounded-full ${dotColors[status]}`} />
-          <h2 className="text-sm font-bold uppercase tracking-wider text-[#1B2559]">
-            {label}
-          </h2>
-          <span className="ml-1 text-sm font-bold text-[#A3AED0]">
-            ({isLoading ? "..." : tasks.length})
-          </span>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-[#1B2559]">{label}</h2>
+          <span className="ml-1 text-sm font-bold text-[#A3AED0]">({isLoading ? "..." : tasks.length})</span>
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 min-h-[150px]">
+      <div className="flex flex-col gap-4 min-h-37.5">
         {isLoading ? (
           <>
             <TaskCardSkeleton />
@@ -50,13 +38,7 @@ function KanbanColumn({
             <TaskCardSkeleton />
           </>
         ) : (
-          tasks.map((task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              onEdit={onEdit}
-            />
-          ))
+          tasks.map((task) => <TaskCard key={task.id} task={task} onEdit={onEdit} />)
         )}
         {!isLoading && tasks.length === 0 && !isBusy && (
           <div className="flex flex-1 items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 p-8 text-center bg-slate-50/50">
