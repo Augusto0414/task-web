@@ -9,6 +9,8 @@ const initialState: TasksState = {
   error: null,
 };
 
+const isSameId = (left: Task["id"], right: Task["id"]) => String(left) === String(right);
+
 export const fetchTasks = createAsyncThunk<Task[], void, { rejectValue: string }>(
   "tasks/fetch",
   async (_, { rejectWithValue }) => {
@@ -72,14 +74,35 @@ const tasksSlice = createSlice({
         state.status = "failed";
         state.error = String(action.payload ?? "Error al cargar tareas");
       })
+      .addCase(createTask.pending, (state, action) => {
+        state.error = null;
+        const tempId = `temp-${action.meta.requestId}`;
+        const tempTask: Task = {
+          id: tempId,
+          title: action.meta.arg.title,
+          description: action.meta.arg.description,
+          status: action.meta.arg.status,
+        };
+        state.items = [tempTask, ...state.items];
+      })
       .addCase(createTask.fulfilled, (state, action) => {
+        const tempId = `temp-${action.meta.requestId}`;
+        state.items = state.items.filter((item) => !isSameId(item.id, tempId));
         state.items = [action.payload, ...state.items];
       })
       .addCase(createTask.rejected, (state, action) => {
         state.error = String(action.payload ?? "Error al crear tarea");
+        const tempId = `temp-${action.meta.requestId}`;
+        state.items = state.items.filter((item) => !isSameId(item.id, tempId));
+      })
+      .addCase(updateTask.pending, (state, action) => {
+        state.error = null;
+        state.items = state.items.map((item) =>
+          isSameId(item.id, action.meta.arg.id) ? { ...item, ...action.meta.arg } : item,
+        );
       })
       .addCase(updateTask.fulfilled, (state, action) => {
-        state.items = state.items.map((item) => (item.id === action.payload.id ? action.payload : item));
+        state.items = state.items.map((item) => (isSameId(item.id, action.payload.id) ? action.payload : item));
       })
       .addCase(updateTask.rejected, (state, action) => {
         state.error = String(action.payload ?? "Error al actualizar tarea");
@@ -91,4 +114,3 @@ export const { clearTasksError, resetTasks } = tasksSlice.actions;
 
 export default tasksSlice.reducer;
 export type { Task, TaskStatus, TasksState };
-

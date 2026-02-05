@@ -18,18 +18,23 @@ function TaskCard({ task, onEdit }: TaskCardProps) {
     <article
       onClick={() => onEdit(task)}
       className="group relative flex flex-col gap-4 rounded-2xl bg-white p-5 shadow-sm border border-slate-100 cursor-pointer"
+      draggable
+      onDragStart={(event) => {
+        event.dataTransfer.setData("text/plain", String(task.id));
+        event.dataTransfer.effectAllowed = "move";
+      }}
     >
       <div className="flex flex-col gap-1.5">
-        <h3 className="text-sm font-bold text-[#1B2559] uppercase tracking-wide">
-          {task.title}
-        </h3>
+        <h3 className="text-sm font-bold text-[#1B2559] uppercase tracking-wide">{task.title}</h3>
         <p className="line-clamp-2 text-[13px] leading-relaxed text-[#A3AED0]">
           {task.description || "Sin descripción"}
         </p>
       </div>
 
       <div className="flex items-center justify-between border-t border-slate-50 pt-3">
-        <span className={`rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-tight ${currentStatus.color}`}>
+        <span
+          className={`rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-tight ${currentStatus.color}`}
+        >
           {currentStatus.label}
         </span>
         <div className="flex items-center gap-2">

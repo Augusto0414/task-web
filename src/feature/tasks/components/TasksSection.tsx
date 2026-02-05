@@ -22,6 +22,7 @@ function TasksSection({
   tasksByStatus,
   onCreateTask,
   onUpdateTask,
+  onMoveTask,
   onLogout,
 }: TasksSectionProps) {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -48,11 +49,12 @@ function TasksSection({
         <div className="flex flex-col gap-1">
           <h1 className="text-3xl font-bold text-[#1B2559]">Tablero de Tareas</h1>
           <p className="text-sm font-medium text-[#A3AED0]">Gestiona tus proyectos y tareas pendientes</p>
+          <p className="text-sm font-medium text-[#A3AED0]">
+            Puedes arrastrar y soltar las tareas para cambiar su estado
+          </p>
         </div>
         <div className="flex items-center gap-6">
-          <p className="hidden text-sm font-bold text-[#1B2559] sm:block">
-            {userName}
-          </p>
+          <p className="hidden text-sm font-bold text-[#1B2559] sm:block">{userName}</p>
           <button
             className="rounded-2xl bg-white px-6 py-3 text-sm font-bold text-[#1B2559] shadow-sm ring-1 ring-slate-100 transition-all hover:bg-slate-50 active:scale-95"
             type="button"
@@ -62,7 +64,6 @@ function TasksSection({
           </button>
         </div>
       </div>
-
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {tasksStatus === "loading" ? (
@@ -74,25 +75,21 @@ function TasksSection({
           </>
         ) : (
           <>
-            <SummaryCard 
-              label="Total" 
-              count={totalTasks} 
-              icon={<BarChart2 className="text-[#4318FF]" size={24} />} 
+            <SummaryCard label="Total" count={totalTasks} icon={<BarChart2 className="text-[#4318FF]" size={24} />} />
+            <SummaryCard
+              label="Pendientes"
+              count={tasksByStatus.pending.length}
+              icon={<Clock className="text-[#FFB800]" size={24} />}
             />
-            <SummaryCard 
-              label="Pendientes" 
-              count={tasksByStatus.pending.length} 
-              icon={<Clock className="text-[#FFB800]" size={24} />} 
+            <SummaryCard
+              label="En Progreso"
+              count={tasksByStatus.in_progress.length}
+              icon={<Zap className="text-[#3965FF]" size={24} />}
             />
-            <SummaryCard 
-              label="En Progreso" 
-              count={tasksByStatus.in_progress.length} 
-              icon={<Zap className="text-[#3965FF]" size={24} />} 
-            />
-            <SummaryCard 
-              label="Completadas" 
-              count={tasksByStatus.done.length} 
-              icon={<CheckCircle2 className="text-[#05CD99]" size={24} />} 
+            <SummaryCard
+              label="Completadas"
+              count={tasksByStatus.done.length}
+              icon={<CheckCircle2 className="text-[#05CD99]" size={24} />}
             />
           </>
         )}
@@ -110,6 +107,7 @@ function TasksSection({
               isLoading={tasksStatus === "loading"}
               onEdit={handleEdit}
               onAddTask={() => handleAddTask(status)}
+              onMoveTask={onMoveTask}
             />
           ))}
         </div>

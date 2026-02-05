@@ -1,73 +1,73 @@
-# React + TypeScript + Vite
+# Task Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web para gestionar tareas con tablero Kanban, autenticación y cambios de estado en tiempo real.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Registro e inicio de sesión.
+- Tablero Kanban con estados: pendiente, en progreso y finalizada.
+- Crear, editar y actualizar tareas.
+- Arrastrar y soltar tareas entre columnas para cambiar su estado.
+- Actualizaciones optimistas para reflejar cambios al instante.
 
-## React Compiler
+## Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React + TypeScript + Vite
+- Redux Toolkit
+- Axios
+- Tailwind CSS
+- Lucide Icons
+- Framer Motion
 
-## Expanding the ESLint configuration
+## Requisitos
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js 18+
+- API disponible con endpoint base en `VITE_API_URL`
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Configuración
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Renombra `.env.example` a `.env` y configura la URL de la API:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+VITE_API_URL=http://localhost:8000/api/v1
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Antes de probar
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Arranca la API primero para que la app pueda leer y actualizar las tareas.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Scripts
+
 ```
+npm run dev
+npm run build
+npm run lint
+npm run preview
+```
+
+## Estructura del proyecto
+
+```
+src/
+  api/               Cliente HTTP y manejo de errores
+  assets/            Recursos estáticos
+  components/        Componentes compartidos
+  feature/
+    auth/            Login/registro y slice
+    home/            Vista principal
+    tasks/           Tablero Kanban, hooks y slice
+  helpers/           Utilidades
+  interfaces/        Tipos y contratos
+  store/             Configuración Redux
+```
+
+## Flujo de tareas
+
+1. Al iniciar sesión se cargan las tareas desde la API.
+2. Crear/editar una tarea actualiza el estado local de inmediato.
+3. Arrastrar una tarea entre columnas actualiza su estado y sincroniza con la API.
+
+## Notas
+
+- El token se guarda en `localStorage` y se envía en cada request.
+- Si la API falla, se muestra el error en la interfaz.

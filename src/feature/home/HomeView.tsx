@@ -39,14 +39,17 @@ function HomeView() {
     setEditingTask,
     handleCreateTask,
     handleUpdateTask,
+    handleMoveTask,
   } = useTasks(token);
 
   const isBusy = authStatus === "loading" || tasksStatus === "loading";
-  const totalTasks = (tasksByStatus.pending.length + tasksByStatus.in_progress.length + tasksByStatus.done.length);
+  const totalTasks = tasksByStatus.pending.length + tasksByStatus.in_progress.length + tasksByStatus.done.length;
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 ${!token ? "bg-[#f8f9fd]" : "bg-[#F4F7FE] text-[#1B2559]"}`}>
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-10 px-6 py-10 lg:px-12">
+    <div
+      className={`min-h-screen transition-colors duration-500 ${!token ? "bg-[#f8f9fd]" : "bg-[#F4F7FE] text-[#1B2559]"}`}
+    >
+      <div className="mx-auto flex w-full max-w-360 flex-col gap-10 px-6 py-10 lg:px-12">
         {!token ? (
           <AuthSection
             authMode={authMode}
@@ -76,6 +79,7 @@ function HomeView() {
             tasksByStatus={tasksByStatus}
             onCreateTask={handleCreateTask}
             onUpdateTask={handleUpdateTask}
+            onMoveTask={handleMoveTask}
             onLogout={handleLogout}
           />
         )}
