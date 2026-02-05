@@ -49,6 +49,10 @@ export interface TasksSectionProps {
   tasksStatus: "idle" | "loading" | "succeeded" | "failed";
   totalTasks: number;
   tasksByStatus: Record<TaskStatus, Task[]>;
+  filterText: string;
+  setFilterText: Dispatch<SetStateAction<string>>;
+  isCreateValid: boolean;
+  isEditValid: boolean;
   onCreateTask: (event: FormEvent<HTMLFormElement>) => Promise<boolean>;
   onUpdateTask: (event: FormEvent<HTMLFormElement>) => Promise<boolean>;
   onMoveTask: (taskId: Task["id"], nextStatus: TaskStatus) => Promise<boolean>;

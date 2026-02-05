@@ -1,4 +1,6 @@
 import { Plus } from "lucide-react";
+import { statusStyles } from "../../../constants/tasks";
+import { ui } from "../../../constants/ui";
 import type { Task, TaskStatus } from "../../../interfaces/tasks";
 import TaskCard from "./TaskCard";
 import { TaskCardSkeleton } from "./TaskCardSkeleton";
@@ -15,19 +17,15 @@ interface KanbanColumnProps {
 }
 
 function KanbanColumn({ status, label, tasks, isBusy, isLoading, onEdit, onAddTask, onMoveTask }: KanbanColumnProps) {
-  const dotColors = {
-    pending: "bg-amber-500",
-    in_progress: "bg-blue-500",
-    done: "bg-emerald-500",
-  };
+  const dotColor = statusStyles[status]?.dotColor ?? statusStyles.pending.dotColor;
 
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-center justify-between px-2">
         <div className="flex items-center gap-2.5">
-          <div className={`h-2.5 w-2.5 rounded-full ${dotColors[status]}`} />
-          <h2 className="text-sm font-bold uppercase tracking-wider text-[#1B2559]">{label}</h2>
-          <span className="ml-1 text-sm font-bold text-[#A3AED0]">({isLoading ? "..." : tasks.length})</span>
+          <div className={`h-2.5 w-2.5 rounded-full ${dotColor}`} />
+          <h2 className={`text-sm font-bold uppercase tracking-wider ${ui.text.primary}`}>{label}</h2>
+          <span className={`ml-1 text-sm font-bold ${ui.text.muted}`}>({isLoading ? "..." : tasks.length})</span>
         </div>
       </div>
 
@@ -60,11 +58,7 @@ function KanbanColumn({ status, label, tasks, isBusy, isLoading, onEdit, onAddTa
         )}
       </div>
 
-      <button
-        onClick={onAddTask}
-        disabled={isLoading}
-        className="group flex w-full items-center justify-center gap-2 rounded-2xl bg-indigo-50/50 py-3.5 text-sm font-bold text-indigo-600 transition-all hover:bg-indigo-600 hover:text-white border border-transparent hover:border-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
+      <button onClick={onAddTask} disabled={isLoading} className={ui.button.soft}>
         <Plus size={18} />
         Añadir tarea
       </button>

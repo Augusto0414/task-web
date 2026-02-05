@@ -1,4 +1,5 @@
 import React from "react";
+import { ui } from "../../../constants/ui";
 
 interface SummaryCardProps {
   label: string;
@@ -8,15 +9,13 @@ interface SummaryCardProps {
 
 function SummaryCard({ label, count, icon }: SummaryCardProps) {
   return (
-    <div className="flex flex-col gap-1 rounded-2xl bg-white p-5 shadow-[0px_18px_40px_rgba(112,144,176,0.12)] border border-slate-50">
+    <div className={ui.card.summary}>
       <div className="flex items-center justify-between">
         <div className="flex flex-col">
-          <p className="text-xs font-bold uppercase tracking-wider text-[#A3AED0]">{label}</p>
-          <span className="text-2xl font-bold text-[#1B2559]">{count}</span>
+          <p className={`text-xs font-bold uppercase tracking-wider ${ui.text.muted}`}>{label}</p>
+          <span className={`text-2xl font-bold ${ui.text.primary}`}>{count}</span>
         </div>
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#F4F7FE] text-2xl">
-          {icon}
-        </div>
+        <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${ui.bg.soft} text-2xl`}>{icon}</div>
       </div>
     </div>
   );

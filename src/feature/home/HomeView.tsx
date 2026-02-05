@@ -1,16 +1,9 @@
-import type { TaskStatus } from "../../interfaces/tasks";
+import { statusLabel, statusOptions } from "../../constants/tasks";
+import { ui } from "../../constants/ui";
 import AuthSection from "../auth/components/AuthSection";
 import { useAuth } from "../auth/hooks/useAuth";
 import TasksSection from "../tasks/components/TasksSection";
 import { useTasks } from "../tasks/hooks/useTasks";
-
-const statusOptions: TaskStatus[] = ["pending", "in_progress", "done"];
-
-const statusLabel: Record<TaskStatus, string> = {
-  pending: "Pendiente",
-  in_progress: "En progreso",
-  done: "Finalizada",
-};
 
 function HomeView() {
   const {
@@ -34,7 +27,12 @@ function HomeView() {
     taskForm,
     taskFormError,
     editingTask,
+    filterText,
     tasksByStatus,
+    isSubmitting,
+    isCreateValid,
+    isEditValid,
+    setFilterText,
     setTaskForm,
     setEditingTask,
     handleCreateTask,
@@ -42,12 +40,12 @@ function HomeView() {
     handleMoveTask,
   } = useTasks(token);
 
-  const isBusy = authStatus === "loading" || tasksStatus === "loading";
+  const isBusy = authStatus === "loading" || tasksStatus === "loading" || isSubmitting;
   const totalTasks = tasksByStatus.pending.length + tasksByStatus.in_progress.length + tasksByStatus.done.length;
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-500 ${!token ? "bg-[#f8f9fd]" : "bg-[#F4F7FE] text-[#1B2559]"}`}
+      className={`min-h-screen transition-colors duration-500 ${!token ? ui.bg.pageAuth : `${ui.bg.pageApp} ${ui.text.primary}`}`}
     >
       <div className="mx-auto flex w-full max-w-360 flex-col gap-10 px-6 py-10 lg:px-12">
         {!token ? (
@@ -77,6 +75,10 @@ function HomeView() {
             tasksStatus={tasksStatus}
             totalTasks={totalTasks}
             tasksByStatus={tasksByStatus}
+            filterText={filterText}
+            setFilterText={setFilterText}
+            isCreateValid={isCreateValid}
+            isEditValid={isEditValid}
             onCreateTask={handleCreateTask}
             onUpdateTask={handleUpdateTask}
             onMoveTask={handleMoveTask}

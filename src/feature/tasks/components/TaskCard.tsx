@@ -1,3 +1,5 @@
+import { statusStyles } from "../../../constants/tasks";
+import { ui } from "../../../constants/ui";
 import type { Task } from "../../../interfaces/tasks";
 
 interface TaskCardProps {
@@ -6,18 +8,12 @@ interface TaskCardProps {
 }
 
 function TaskCard({ task, onEdit }: TaskCardProps) {
-  const statusConfig = {
-    pending: { label: "Pendiente", color: "text-amber-600 bg-amber-50" },
-    in_progress: { label: "En Marcha", color: "text-blue-600 bg-blue-50" },
-    done: { label: "Completado", color: "text-emerald-600 bg-emerald-50" },
-  };
-
-  const currentStatus = statusConfig[task.status] || statusConfig.pending;
+  const currentStatus = statusStyles[task.status] || statusStyles.pending;
 
   return (
     <article
       onClick={() => onEdit(task)}
-      className="group relative flex flex-col gap-4 rounded-2xl bg-white p-5 shadow-sm border border-slate-100 cursor-pointer"
+      className={ui.card.kanban}
       draggable
       onDragStart={(event) => {
         event.dataTransfer.setData("text/plain", String(task.id));
@@ -25,15 +21,15 @@ function TaskCard({ task, onEdit }: TaskCardProps) {
       }}
     >
       <div className="flex flex-col gap-1.5">
-        <h3 className="text-sm font-bold text-[#1B2559] uppercase tracking-wide">{task.title}</h3>
-        <p className="line-clamp-2 text-[13px] leading-relaxed text-[#A3AED0]">
+        <h3 className={`text-sm font-bold ${ui.text.primary} uppercase tracking-wide`}>{task.title}</h3>
+        <p className={`line-clamp-2 text-[13px] leading-relaxed ${ui.text.muted}`}>
           {task.description || "Sin descripción"}
         </p>
       </div>
 
       <div className="flex items-center justify-between border-t border-slate-50 pt-3">
         <span
-          className={`rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-tight ${currentStatus.color}`}
+          className={`rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-tight ${currentStatus.badgeColor}`}
         >
           {currentStatus.label}
         </span>
