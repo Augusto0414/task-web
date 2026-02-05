@@ -1,9 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Asterisk, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import AuthSidebar from "./AuthSidebar";
-
+import { ui } from "../../../constants/ui";
 import type { AuthSectionProps } from "../../../interfaces/auth";
+import AuthSidebar from "./AuthSidebar";
 
 function AuthSection({
   authMode,
@@ -20,17 +20,17 @@ function AuthSection({
 
   return (
     <div className="flex w-full items-center justify-center p-2 sm:p-4">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex w-full max-w-5xl overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-white p-2 sm:p-3 shadow-2xl"
+        className="flex w-full max-w-5xl overflow-hidden rounded-4xl sm:rounded-[2.5rem] bg-white p-2 sm:p-3 shadow-2xl"
       >
         <AuthSidebar />
 
-        <div className="flex flex-1 flex-col px-6 py-12 sm:px-10 sm:py-16 lg:px-20 xl:py-20 min-h-[600px] sm:min-h-[700px]">
+        <div className="flex flex-1 flex-col px-6 py-12 sm:px-10 sm:py-16 lg:px-20 xl:py-20 min-h-150 sm:min-h-175">
           <div className="mb-8 lg:hidden">
-             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white font-bold">
-                <Asterisk className="h-6 w-6" strokeWidth={3} />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white font-bold">
+              <Asterisk className="h-6 w-6" strokeWidth={3} />
             </div>
           </div>
 
@@ -54,9 +54,11 @@ function AuthSection({
               <form className="flex w-full max-w-md flex-col gap-5 sm:gap-6 mx-auto sm:mx-0" onSubmit={onSubmit}>
                 {authMode === "register" && (
                   <label className="flex flex-col gap-2">
-                    <span className="px-1 text-xs font-bold uppercase tracking-wider text-slate-800">Nombre completo</span>
+                    <span className="px-1 text-xs font-bold uppercase tracking-wider text-slate-800">
+                      Nombre completo
+                    </span>
                     <input
-                      className="rounded-xl border border-slate-200 bg-white px-4 py-3 sm:py-3.5 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10"
+                      className={`w-full ${ui.input.auth}`}
                       placeholder="Ej. Juan Pérez"
                       value={authForm.name}
                       onChange={(event) =>
@@ -70,10 +72,12 @@ function AuthSection({
                 )}
 
                 <label className="flex flex-col gap-2">
-                  <span className="px-1 text-xs font-bold uppercase tracking-wider text-slate-800">Correo electrónico</span>
+                  <span className="px-1 text-xs font-bold uppercase tracking-wider text-slate-800">
+                    Correo electrónico
+                  </span>
                   <input
                     type="email"
-                    className="rounded-xl border border-slate-200 bg-white px-4 py-3 sm:py-3.5 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10"
+                    className={`w-full ${ui.input.auth}`}
                     placeholder="ejemplo@correo.com"
                     value={authForm.email}
                     onChange={(event) =>
@@ -90,7 +94,7 @@ function AuthSection({
                   <div className="relative">
                     <input
                       type={showPassword ? "text" : "password"}
-                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 sm:py-3.5 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10"
+                      className={`w-full ${ui.input.auth}`}
                       placeholder="••••••••"
                       value={authForm.password}
                       onChange={(event) =>
@@ -100,8 +104,8 @@ function AuthSection({
                         }))
                       }
                     />
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
                     >
@@ -110,8 +114,37 @@ function AuthSection({
                   </div>
                 </label>
 
+                {authMode === "register" && (
+                  <label className="flex flex-col gap-2">
+                    <span className="px-1 text-xs font-bold uppercase tracking-wider text-slate-800">
+                      Confirmar contraseña
+                    </span>
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        className={`w-full ${ui.input.auth}`}
+                        placeholder="••••••••"
+                        value={authForm.passwordConfirmation}
+                        onChange={(event) =>
+                          setAuthForm((prev) => ({
+                            ...prev,
+                            passwordConfirmation: event.target.value,
+                          }))
+                        }
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </button>
+                    </div>
+                  </label>
+                )}
+
                 {(authFormError || authError) && (
-                  <motion.p 
+                  <motion.p
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     className="rounded-lg bg-rose-50 p-3 text-xs font-medium text-rose-500"
@@ -121,7 +154,7 @@ function AuthSection({
                 )}
 
                 {registerNotice && (
-                  <motion.p 
+                  <motion.p
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     className="rounded-lg bg-emerald-50 p-3 text-xs font-medium text-emerald-500"
@@ -131,11 +164,15 @@ function AuthSection({
                 )}
 
                 <button
-                  className="mt-2 sm:mt-4 rounded-xl bg-indigo-600 py-3.5 sm:py-4 text-sm font-bold text-white shadow-xl shadow-indigo-600/30 transition hover:bg-indigo-500 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
+                  className={`mt-2 sm:mt-4 ${ui.button.authPrimary}`}
                   type="submit"
                   disabled={authStatus === "loading"}
                 >
-                  {authStatus === "loading" ? "Procesando..." : authMode === "register" ? "Empezar ahora" : "Iniciar sesión"}
+                  {authStatus === "loading"
+                    ? "Procesando..."
+                    : authMode === "register"
+                      ? "Empezar ahora"
+                      : "Iniciar sesión"}
                 </button>
               </form>
 

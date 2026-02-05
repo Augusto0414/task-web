@@ -1,5 +1,6 @@
 import { BarChart2, CheckCircle2, Clock, Zap } from "lucide-react";
 import { useState } from "react";
+import { ui } from "../../../constants/ui";
 import type { Task, TaskStatus, TasksSectionProps } from "../../../interfaces/tasks";
 import KanbanColumn from "./KanbanColumn";
 import SummaryCard from "./SummaryCard";
@@ -20,6 +21,10 @@ function TasksSection({
   tasksStatus,
   totalTasks,
   tasksByStatus,
+  filterText,
+  setFilterText,
+  isCreateValid,
+  isEditValid,
   onCreateTask,
   onUpdateTask,
   onMoveTask,
@@ -47,19 +52,23 @@ function TasksSection({
     <section className="flex flex-col gap-10">
       <div className="flex flex-wrap items-center justify-between gap-6">
         <div className="flex flex-col gap-1">
-          <h1 className="text-3xl font-bold text-[#1B2559]">Tablero de Tareas</h1>
-          <p className="text-sm font-medium text-[#A3AED0]">Gestiona tus proyectos y tareas pendientes</p>
-          <p className="text-sm font-medium text-[#A3AED0]">
+          <h1 className={`text-3xl font-bold ${ui.text.primary}`}>Tablero de Tareas</h1>
+          <p className={`text-sm font-medium ${ui.text.muted}`}>Gestiona tus proyectos y tareas pendientes</p>
+          <p className={`text-sm font-medium ${ui.text.muted}`}>
             Puedes arrastrar y soltar las tareas para cambiar su estado
           </p>
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-6">
+          <div className="w-full sm:w-72">
+            <input
+              className={`w-full ${ui.input.base}`}
+              placeholder="Filtrar por título o descripción"
+              value={filterText}
+              onChange={(event) => setFilterText(event.target.value)}
+            />
+          </div>
           <p className="hidden text-sm font-bold text-[#1B2559] sm:block">{userName}</p>
-          <button
-            className="rounded-2xl bg-white px-6 py-3 text-sm font-bold text-[#1B2559] shadow-sm ring-1 ring-slate-100 transition-all hover:bg-slate-50 active:scale-95"
-            type="button"
-            onClick={onLogout}
-          >
+          <button className={ui.button.outline} type="button" onClick={onLogout}>
             Cerrar sesión
           </button>
         </div>
@@ -125,9 +134,14 @@ function TasksSection({
             isBusy={isBusy}
             onSubmit={async (e) => {
               const isEdit = !!editingTask;
-              const success = isEdit ? await onUpdateTask(e) : await onCreateTask(e);
-              if (success) {
-                setIsFormOpen(false);
+              const isValid = isEdit ? isEditValid : isCreateValid;
+              if (isEdit) {
+                void onUpdateTask(e);
+              } else {
+                void onCreateTask(e);
+              }
+              if (isValid) {
+                handleCloseForm();
               }
             }}
             onClose={handleCloseForm}

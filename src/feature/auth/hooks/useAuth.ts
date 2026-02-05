@@ -13,6 +13,7 @@ export function useAuth() {
     name: "",
     email: "",
     password: "",
+    passwordConfirmation: "",
   });
   const [authFormError, setAuthFormError] = useState<string | null>(null);
 
@@ -20,6 +21,7 @@ export function useAuth() {
     setAuthMode(mode);
     if (mode === "login") {
       setRegisterNotice(null);
+      setAuthForm((prev) => ({ ...prev, passwordConfirmation: "" }));
     }
   };
 
@@ -29,6 +31,9 @@ export function useAuth() {
     }
     if (authMode === "register" && !authForm.name.trim()) {
       return "El nombre es obligatorio para el registro.";
+    }
+    if (authMode === "register" && authForm.password !== authForm.passwordConfirmation) {
+      return "La confirmación de contraseña no coincide.";
     }
     return null;
   };
@@ -49,12 +54,13 @@ export function useAuth() {
           name: authForm.name.trim(),
           email: authForm.email.trim(),
           password: authForm.password,
+          password_confirmation: authForm.passwordConfirmation,
         }),
       );
       if (registerUser.fulfilled.match(result)) {
         setRegisterNotice("¡Registro completado con éxito! Por favor, inicia sesión.");
         setAuthMode("login");
-        setAuthForm((prev) => ({ ...prev, password: "" }));
+        setAuthForm((prev) => ({ ...prev, password: "", passwordConfirmation: "" }));
       }
       return;
     }
