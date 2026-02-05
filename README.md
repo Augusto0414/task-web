@@ -36,6 +36,20 @@ VITE_API_URL=http://localhost:8000/api/v1
 
 Arranca la API primero para que la app pueda leer y actualizar las tareas.
 
+## Docker
+
+Para construir y levantar la app usando Docker y la variable de entorno del `.env`:
+
+```
+docker compose --env-file .env -f docker/docker-compose.yml up --build
+```
+
+Si prefieres pasar la variable directamente sin `.env`:
+
+```bash
+VITE_API_URL=http://localhost:8000/api/v1 docker compose -f docker/docker-compose.yml up --build
+```
+
 ## Scripts
 
 ```
