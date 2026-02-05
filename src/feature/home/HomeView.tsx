@@ -37,7 +37,6 @@ function HomeView() {
     setEditingTask,
     handleCreateTask,
     handleUpdateTask,
-    handleMoveTask,
   } = useTasks(token);
 
   const isBusy = authStatus === "loading" || tasksStatus === "loading" || isSubmitting;
@@ -81,7 +80,6 @@ function HomeView() {
             isEditValid={isEditValid}
             onCreateTask={handleCreateTask}
             onUpdateTask={handleUpdateTask}
-            onMoveTask={handleMoveTask}
             onLogout={handleLogout}
           />
         )}

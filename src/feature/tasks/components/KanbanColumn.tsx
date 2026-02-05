@@ -13,10 +13,9 @@ interface KanbanColumnProps {
   isLoading?: boolean;
   onEdit: (task: Task) => void;
   onAddTask: () => void;
-  onMoveTask: (taskId: Task["id"], nextStatus: TaskStatus) => Promise<boolean>;
 }
 
-function KanbanColumn({ status, label, tasks, isBusy, isLoading, onEdit, onAddTask, onMoveTask }: KanbanColumnProps) {
+function KanbanColumn({ status, label, tasks, isBusy, isLoading, onEdit, onAddTask }: KanbanColumnProps) {
   const dotColor = statusStyles[status]?.dotColor ?? statusStyles.pending.dotColor;
 
   return (
@@ -29,19 +28,7 @@ function KanbanColumn({ status, label, tasks, isBusy, isLoading, onEdit, onAddTa
         </div>
       </div>
 
-      <div
-        className="flex flex-col gap-4 min-h-37.5"
-        onDragOver={(event) => {
-          event.preventDefault();
-        }}
-        onDrop={(event) => {
-          event.preventDefault();
-          const taskId = event.dataTransfer.getData("text/plain");
-          if (taskId) {
-            void onMoveTask(taskId, status);
-          }
-        }}
-      >
+      <div className="flex flex-col gap-4 min-h-37.5">
         {isLoading ? (
           <>
             <TaskCardSkeleton />

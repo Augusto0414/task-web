@@ -27,7 +27,6 @@ function TasksSection({
   isEditValid,
   onCreateTask,
   onUpdateTask,
-  onMoveTask,
   onLogout,
 }: TasksSectionProps) {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -54,9 +53,6 @@ function TasksSection({
         <div className="flex flex-col gap-1">
           <h1 className={`text-3xl font-bold ${ui.text.primary}`}>Tablero de Tareas</h1>
           <p className={`text-sm font-medium ${ui.text.muted}`}>Gestiona tus proyectos y tareas pendientes</p>
-          <p className={`text-sm font-medium ${ui.text.muted}`}>
-            Puedes arrastrar y soltar las tareas para cambiar su estado
-          </p>
         </div>
         <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-6">
           <div className="w-full sm:w-72">
@@ -116,7 +112,6 @@ function TasksSection({
               isLoading={tasksStatus === "loading"}
               onEdit={handleEdit}
               onAddTask={() => handleAddTask(status)}
-              onMoveTask={onMoveTask}
             />
           ))}
         </div>
